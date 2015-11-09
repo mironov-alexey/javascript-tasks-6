@@ -1,19 +1,26 @@
 'use strict';
 
+function pluralize_(number, result, words) {
+    if (number == 0)
+        return result;
+    if ((number >= 5 && number < 21)) {
+        result += number + ' ' + words[2] + ' ';
+    } else if ((number % 10) == 1) {
+        result += number + ' ' + words[0] + ' ';
+    } else if ((number % 10) === 0) {
+        result += number + ' ' + words[2] + ' ';
+    } else if ((number % 10) < 5) {
+        result += number + ' ' + words[1] + ' ';
+    } else if ((number % 10) >= 5) {
+        result += number + ' ' + words[2] + ' ';
+    }
+    return result;
+}
 function pluralize(days, hours, minutes) {
     var result = 'До ограбления осталось ';
-    //var daysPlur = {1: 'день', 2: 'дня', 5: 'дней'}
-    if ((days >= 5 && days < 21)) {
-        result += days + ' дней, ';
-    } else if (days > 1) {
-        result += days + ' дня, ';
-    } else if (days == 1) {
-        result += days + ' день, ';
-    } else if (days % 10 < 5) {
-        result += days + ' дня, ';
-    } else if (days % 10 >= 5) {
-        result += days + ' дней, ';
-    }
+    result = pluralize_(days, result, ['день', 'дня', 'дней']);
+    result = pluralize_(hours, result, ['час', 'часа', 'часов']);
+    result = pluralize_(minutes, result, ['минута', 'минуты', 'минут']);
     return result;
 }
 
@@ -45,13 +52,13 @@ module.exports = function () {
         // Возвращает кол-во времени между текущей датой и переданной `moment`
         // в человекопонятном виде
         fromMoment: function (moment) {
-            console.log(this.date);
-            console.log(moment.date);
+            //console.log(this.date);
+            //console.log(moment.date);
             var tempDate = new Date(this.date - moment.date);
             var days = Math.floor(tempDate.getTime() / (1000 * 60 * 60 * 24));
             var hours = Math.floor(tempDate.getTime() / (1000 * 60 * 60)) % 24;
             var minutes = Math.floor(tempDate.getTime() / (1000 * 60)) % 60;
-            console.log(days, hours, minutes);
+            //console.log(days, hours, minutes);
             return pluralize(days, hours, minutes);
         }
     };

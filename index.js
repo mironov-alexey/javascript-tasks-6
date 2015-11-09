@@ -54,7 +54,8 @@ console.log(
 );
 // «До ограбления остался 1 день 6 часов 59 минут»
 
-currentMoment.date = 'ПН 12:59+5';
+//currentMoment.date = 'ПН 12:59+5';
+currentMoment.date = 'ПН 00:01+5';
 console.log(
     robbery.getStatus(currentMoment, robberyMoment)
 );
