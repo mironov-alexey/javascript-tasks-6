@@ -1,8 +1,9 @@
 'use strict';
 
 function pluralize_(number, result, words) {
-    if (number == 0)
+    if (number == 0) {
         return result;
+    }
     if ((number >= 5 && number < 21)) {
         result += number + ' ' + words[2] + ' ';
     } else if ((number % 10) == 1) {
