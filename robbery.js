@@ -28,7 +28,6 @@ function getUTCWorkingHours(workingHours) {
 function getBusySegments(obj) {
     var busySegments = [];
     for (var name in obj) {
-        //console.log(name);
         for (var i = 0; i < obj[name].length; i++) {
             var from = getUTCDate(obj[name][i].from);
             var to = getUTCDate(obj[name][i].to);
@@ -49,6 +48,8 @@ function getWorkingSegments(utcWorkingHours) {
             utcWorkingHours[1].getMinutes());
         workingSegments.push([start, end]);
     }
+    // уберём лишний час, который не влезет в среду в таймзоне +5
+    //workingSegments[workingSegments.length - 1][1] -= 60;
     return workingSegments;
 }
 
@@ -68,29 +69,38 @@ function parseFromMinutesToDate(resultSegment, days) {
     var day = Math.floor(resultSegment[0] / (24 * 60));
     var hours = Math.floor(resultSegment[0] / 60) % 24;
     var minutes = resultSegment[0] - (day * 24 + hours) * 60;
-    //console.log(day, hours, minutes);
     return new Date(2015, 10, days[day], hours, minutes);
 }
 
+//function adjustWorkingSegments(workingSegments, timezone) {
+//    console.log(workingSegments[workingSegments.length - 1][1]);
+//    var localEndWorking = workingSegments[workingSegments.length - 1][1] + timezone * 60;
+//    //console.log(localEndWorking, 72 * 60)
+//    if (72 * 60 <= localEndWorking) {
+//        workingSegments[workingSegments.length - 1][1] -= (localEndWorking - 72 * 60);
+//    }
+//    //console.log(workingSegments[workingSegments.length - 1][1]);
+//}
 module.exports.getAppropriateMoment = function (json, minDuration, workingHours) {
     var appropriateMoment = moment();
     appropriateMoment.timezone = parseInt(workingHours.from.substring(5));
     var utcWorkingHours = getUTCWorkingHours(workingHours);
     // 1. Читаем json
     var obj = JSON.parse(json);
-    //console.log(obj);
     var workingSegments = getWorkingSegments(utcWorkingHours);
+    //adjustWorkingSegments(workingSegments, appropriateMoment.timezone);
     var busySegments = getBusySegments(obj);
     // 2. Находим подходящий ближайший момент начала ограбления
     var resultSegment = findAppropriateTime(minDuration, workingSegments, busySegments);
-    //console.log(resultSegment);
     var date;
     var days = {0: 9, 1: 10, 2: 11};
-    //console.log(resultSegment);
+
     if (resultSegment) {
+        //console.log(resultSegment[1] + appropriateMoment.timezone * 60, );
+        //if (resultSegment[1] + appropriateMoment.timezone * 60 > workingSegments[workingSegments.length - 1] +)
+        //    return;
         date = parseFromMinutesToDate(resultSegment, days);
     }
-    console.log(date);
     // 3. И записываем в appropriateMoment
     appropriateMoment.date = date;
     return appropriateMoment;
@@ -120,11 +130,10 @@ function inWorkingHours(segment, workingSegments) {
 }
 
 // Возвращает статус ограбления (этот метод уже готов!)
-// да нифига, я хочу по-другому дату хранить, может быть
-// например, в формате UTC
-// И вообще что за бред хранить дату в формате 'ПН 12:00+5'
-// Если есть встроенный объект даты О_о
 module.exports.getStatus = function (moment, robberyMoment) {
+    if (!robberyMoment.date) {
+        throw "Не найден подходящий момент для ограбления!"
+    }
     moment.date = getUTCDate(moment.date);
     if (moment.date < robberyMoment.date) {
         // «До ограбления остался 1 день 6 часов 59 минут»
