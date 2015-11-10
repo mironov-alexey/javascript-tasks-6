@@ -48,8 +48,6 @@ function getWorkingSegments(utcWorkingHours) {
             utcWorkingHours[1].getMinutes());
         workingSegments.push([start, end]);
     }
-    // уберём лишний час, который не влезет в среду в таймзоне +5
-    //workingSegments[workingSegments.length - 1][1] -= 60;
     return workingSegments;
 }
 
@@ -72,15 +70,6 @@ function parseFromMinutesToDate(resultSegment, days) {
     return new Date(2015, 10, days[day], hours, minutes);
 }
 
-//function adjustWorkingSegments(workingSegments, timezone) {
-//    console.log(workingSegments[workingSegments.length - 1][1]);
-//    var localEndWorking = workingSegments[workingSegments.length - 1][1] + timezone * 60;
-//    //console.log(localEndWorking, 72 * 60)
-//    if (72 * 60 <= localEndWorking) {
-//        workingSegments[workingSegments.length - 1][1] -= (localEndWorking - 72 * 60);
-//    }
-//    //console.log(workingSegments[workingSegments.length - 1][1]);
-//}
 module.exports.getAppropriateMoment = function (json, minDuration, workingHours) {
     var appropriateMoment = moment();
     appropriateMoment.timezone = parseInt(workingHours.from.substring(5));
@@ -96,9 +85,6 @@ module.exports.getAppropriateMoment = function (json, minDuration, workingHours)
     var days = {0: 9, 1: 10, 2: 11};
 
     if (resultSegment) {
-        //console.log(resultSegment[1] + appropriateMoment.timezone * 60, );
-        //if (resultSegment[1] + appropriateMoment.timezone * 60 > workingSegments[workingSegments.length - 1] +)
-        //    return;
         date = parseFromMinutesToDate(resultSegment, days);
     }
     // 3. И записываем в appropriateMoment
@@ -132,7 +118,7 @@ function inWorkingHours(segment, workingSegments) {
 // Возвращает статус ограбления (этот метод уже готов!)
 module.exports.getStatus = function (moment, robberyMoment) {
     if (!robberyMoment.date) {
-        throw "Не найден подходящий момент для ограбления!"
+        throw 'Не найден подходящий момент для ограбления!';
     }
     moment.date = getUTCDate(moment.date);
     if (moment.date < robberyMoment.date) {

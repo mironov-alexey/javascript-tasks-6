@@ -34,7 +34,7 @@ var gang = require('fs').readFileSync('gang.json', 'utf-8');
 //);
 //// Ограбление должно состоятся в ВТ. Всем быть готовыми к 03:30!
 //
-//// Для Дарьи вышлем приглашение в её часовом поясе, так как она живёт на Тортуге (часовой пояс -5):
+// Для Дарьи вышлем приглашение в её часовом поясе, так как она живёт на Тортуге (часовой пояс -5):
 //robberyMoment.timezone = -5; // Переводим время в часовой пояс Дарьи
 //console.log(
 //    robberyMoment.format('Дарья, прилетай в Котеринбург в %DD. Собираемся в %HH:%MM!')
@@ -63,7 +63,6 @@ var gang = require('fs').readFileSync('gang.json', 'utf-8');
 //// «До ограбления остался 21 час 1 минута»
 
 
-
 for (var i = 0; i < 542; i++) {
     var robberyMoment = robbery.getAppropriateMoment(
         // Расписание членов банды
@@ -88,5 +87,5 @@ for (var i = 0; i < 542; i++) {
     console.log(i + ': ' +
         robberyMoment.format('Ограбление должно состоятся в %DD. Всем быть готовыми к %HH:%MM!'));
     console.log(i + ': ' + robbery.getStatus(currentMoment, robberyMoment)
-);
+    );
 }

@@ -21,21 +21,21 @@ function pluralize_(number, result, words) {
 function pluralizeRemaining(days, hours, minutes) {
     if (days > 0) {
         if (days != 11 && days % 10 == 1) {
-            return 'остался '
+            return 'остался ';
         } else {
-            return 'осталось '
+            return 'осталось ';
         }
     } else if (hours > 0) {
         if (hours != 11 && hours % 10 == 1) {
-            return 'остался '
+            return 'остался ';
         } else {
-            return 'осталось '
+            return 'осталось ';
         }
     } else if (minutes > 0) {
         if (minutes != 11 && minutes % 10 == 1) {
-            return 'остался '
+            return 'остался ';
         } else {
-            return 'осталось '
+            return 'осталось ';
         }
     }
 }
@@ -59,7 +59,7 @@ module.exports = function () {
         // Выводит дату в переданном формате
         format: function (pattern) {
             if (!this.date) {
-                throw 'Не найден подходящий момент для ограбления!'
+                throw 'Не найден подходящий момент для ограбления!';
             }
             var localDate = new Date(this.date - (-this.timezone * 1000 * 3600));
             var days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
@@ -80,7 +80,7 @@ module.exports = function () {
         // в человекопонятном виде
         fromMoment: function (moment) {
             if (!this.date) {
-                throw 'Не найден подходящий момент для ограбления!'
+                throw 'Не найден подходящий момент для ограбления!';
             }
             var tempDate = new Date(this.date - moment.date);
             var days = Math.floor(tempDate.getTime() / (1000 * 60 * 60 * 24));
