@@ -36,7 +36,7 @@ module.exports = function () {
         // Выводит дату в переданном формате
         format: function (pattern) {
             var localDate = new Date(this.date - (-this.timezone * 1000 * 3600));
-            var days = {0: 'ВС', 1: 'ПН', 2: 'ВТ', 3: 'СР', 4: 'ЧТ', 5: 'ПТ', 6: 'СБ'};
+            var days = ['ВС', 'ПН', 'ВТ', 'СР', 'ЧТ', 'ПТ', 'СБ'];
             var hours = (localDate.getHours() < 10 ?
                 '0' + localDate.getHours() :
                 localDate.getHours()

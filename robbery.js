@@ -103,14 +103,14 @@ function isValid(segment, busySegments) {
 }
 //текущий отрезок // один из отрезков-занятости
 function areIntersected(segment1, segment2) {
-    var inside = isInside(segment2, segment1);
+    var inside = isInside(segment2, segment1) || isInside(segment1, segment2);
     var intersected = (segment2[0] < segment1[1] && segment1[1] < segment2[1]) ||
         (segment2[0] < segment1[0] && segment1[0] < segment2[1]);
     return inside || intersected;
 }
 
 function isInside(segment1, segment2) {
-    return segment2[0] < segment1[0] && segment1[1] < segment2[1];
+    return segment2[0] <= segment1[0] && segment1[1] <= segment2[1];
 }
 
 function inWorkingHours(segment, workingSegments) {
