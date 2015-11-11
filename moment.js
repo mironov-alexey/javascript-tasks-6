@@ -33,7 +33,7 @@ function pluralizeRemaining(days, hours, minutes) {
         }
     } else if (minutes > 0) {
         if (minutes != 11 && minutes % 10 == 1) {
-            return 'остался ';
+            return 'осталась ';
         } else {
             return 'осталось ';
         }
